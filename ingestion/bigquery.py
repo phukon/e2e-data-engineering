@@ -7,7 +7,7 @@ from loguru import logger
 import time
 import pandas as pd
 
-# from ingestion.models import PypiJobParameters
+from ingestion.models import PypiJobParameters
 
 load_dotenv()
 PYPI_PUBLIC_DATASET = "bigquery-public-data.pypi.file_downloads"
@@ -56,31 +56,31 @@ def get_bigquery_result(
         raise
 
 
-def build_pypi_query() -> str:
-    # Query the public PyPI dataset from BigQuery
-    # /!\ This is a large dataset, filter accordingly /!\
-    return f"""
-    SELECT *
-    FROM
-       `bigquery-public-data.pypi.file_downloads`
-    WHERE
-        project = 'duckdb'
-        AND timestamp >= TIMESTAMP("2024-04-01")
-        AND timestamp < TIMESTAMP("2024-04-02")
-    """
-
-
-# def build_pypi_query(
-#     params: PypiJobParameters, pypi_public_dataset: str = PYPI_PUBLIC_DATASET
-# ) -> str:
+# def build_pypi_query() -> str:
 #     # Query the public PyPI dataset from BigQuery
 #     # /!\ This is a large dataset, filter accordingly /!\
 #     return f"""
 #     SELECT *
 #     FROM
-#         `{pypi_public_dataset}`
+#        `bigquery-public-data.pypi.file_downloads`
 #     WHERE
-#         project = '{params.pypi_project}'
-#         AND {params.timestamp_column} >= TIMESTAMP("{params.start_date}")
-#         AND {params.timestamp_column} < TIMESTAMP("{params.end_date}")
+#         project = 'duckdb'
+#         AND timestamp >= TIMESTAMP("2024-04-01")
+#         AND timestamp < TIMESTAMP("2024-04-02")
 #     """
+
+
+def build_pypi_query(
+    params: PypiJobParameters, pypi_public_dataset: str = PYPI_PUBLIC_DATASET
+) -> str:
+    # Query the public PyPI dataset from BigQuery
+    # /!\ This is a large dataset, filter accordingly /!\
+    return f"""
+    SELECT *
+    FROM
+        `{pypi_public_dataset}`
+    WHERE
+        project = '{params.pypi_project}'
+        AND {params.timestamp_column} >= TIMESTAMP("{params.start_date}")
+        AND {params.timestamp_column} < TIMESTAMP("{params.end_date}")
+    """
