@@ -19,4 +19,4 @@ format:
 	ruff format .
 
 test:
-	pytest tests
+	 PYTHONPATH=. pytest ingestion/tests
