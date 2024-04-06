@@ -8,6 +8,7 @@
 *.wal
 
 duckdb.csv
+pypi_file_downloads.csv
 
 # devtools
 .ruff_cache
