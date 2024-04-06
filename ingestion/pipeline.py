@@ -4,7 +4,7 @@ from ingestion.bigquery import (
     build_pypi_query,
 )
 
-from ingestion.models import PypiJobParameters
+from ingestion.models import PypiJobParameters, validate_dataframe, FileDownloads
 import fire
 import duckdb
 
@@ -14,9 +14,10 @@ def main(params: PypiJobParameters):
     df = get_bigquery_result(
         build_pypi_query(params), get_bigquery_client(params.gcp_project)
     )
-    print(df)
+    # print(df)
+    validate_dataframe(df, FileDownloads)
     conn = duckdb.connect()
-    conn.sql("COPY (SELECT * FROM df) to 'duckdb.csv' (FORMAT csv, )")
+    conn.sql("COPY (SELECT * FROM df)  TO 'duckdb.csv'")
 
 
 if __name__ == "__main__":
